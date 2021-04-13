@@ -12,40 +12,27 @@ const getTodos = () => {
 
 export default function NoteList(props) {
   const [todos, setTodos] = useState([]);
-  useEffect(() => {
-    const newTodos = getTodos();
-    setTodos(newTodos);
-  }, []);
+  const [store, setStore] = useState([]);
 
-  useEffect(() => {
-    if (todos.length > 0) {
-      localStorage.setItem("todos", JSON.stringify(todos));
-    }
-    if (todos.length === 0) {
-      localStorage.clear();
-    }
-  }, [todos]);
+  // useEffect(() => {
+  //   const newTodos = getTodos();
+  //   setTodos(newTodos);
+  // }, []);
+
+  // useEffect(() => {
+  //   if (todos.length > 0) {
+  //     localStorage.setItem("todos", JSON.stringify(todos));
+  //   }
+  //   if (todos.length === 0) {
+  //     localStorage.clear();
+  //   }
+  // }, [todos]);
 
   const handleSubmit = (value) => {
     if (!value) return;
     addTodo(value);
     // setValue("");
   };
-
-  // const editTodo =(title, index,)=>{
-  //     const newTodos = [...todos]
-  //     const date = new Date
-  //     newTodos.splice(index,1, {title: title, time: date.getHours()+ ':' + date.getMinutes()})
-  //     setEditorHandler(!editorHandler)
-  //     setTodos(newTodos)
-  // }
-
-  // const mark = (index)=>{
-  //     const newTodos =[...todos]
-  //     setCheck(!check)
-  //     newTodos[index].check = check
-  //     setTodos(newTodos)
-  // }
 
   const addTodo = (value) => {
     const date = new Date();
@@ -57,23 +44,48 @@ export default function NoteList(props) {
       ...todos
     ];
     setTodos(newTodos);
+    setStore(newTodos);
   };
 
   const removeTodo = (index) => {
     const newTodos = [...todos];
     newTodos.splice(index, 1);
     setTodos(newTodos);
+    setStore(newTodos);
   };
 
-  console.log(todos);
+  const moveUp = (index) => {
+    const newTodos = [...todos];
+    const movingItem = newTodos.splice(index, 1)[0];
+    newTodos.splice(index - 1, 0, movingItem);
+    setTodos(newTodos);
+    setStore(newTodos);
+  };
+  const moveDown = (index) => {
+    const newTodos = [...todos];
+    const movingItem = newTodos.splice(index, 1)[0];
+    newTodos.splice(index + 1, 0, movingItem);
+    setTodos(newTodos);
+    setStore(newTodos);
+  };
+
+  // console.log(todos);
 
   return (
     <div>
       <ul>
         {todos.map((todos, index) => (
           <>
-            <li key={todos.index}>
-              <Note title={todos} index={index} remove={removeTodo} />
+            <li key={todos.date}>
+              <Note
+                store={store}
+                setDown={moveDown}
+                setUp={moveUp}
+                title={todos}
+                index={index}
+                remove={removeTodo}
+                isBtnAllow={true}
+              />
             </li>
           </>
         ))}

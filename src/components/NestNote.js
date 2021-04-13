@@ -37,7 +37,7 @@ export default function NestNote(props) {
     setTodo(newTodos);
     setIsSubList((prev) => !prev);
   };
-  console.log(todo);
+  // console.log(todo);
 
   return (
     <div>
@@ -48,7 +48,7 @@ export default function NestNote(props) {
       <ul>
         {todo.map((todo, index) => (
           <li key={todo.date}>
-            <Note title={todo} index={index} remove={removeTodo} />{" "}
+            <Note title={todo} index={index} remove={removeTodo} store={""} />{" "}
           </li>
         ))}
       </ul>
