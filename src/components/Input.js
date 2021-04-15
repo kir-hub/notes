@@ -4,8 +4,6 @@ export default function Input(props) {
   const { onAdd, btnTitle } = props;
 
   const [text, setText] = useState("");
-  const [notes, setNotes] = useState([]);
-  const [sublist, setSublist] = useState([]);
 
   const textHandler = () => {
     setText(text);
@@ -19,7 +17,6 @@ export default function Input(props) {
   return (
     <div>
       <input onChange={onChangeHandler} value={text} palceholder="title" />
-
       <button onClick={textHandler}> {btnTitle ? btnTitle : "add"} </button>
       {}
     </div>
