@@ -1,0 +1,12 @@
+.delete-sublist {
+  margin: 10px;
+  color: red;
+  margin-left: 200px;
+}
+.remove-sublist {
+  margin-right: -225px;
+}
+
+li {
+  list-style-type: none;
+}
