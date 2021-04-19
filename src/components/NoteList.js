@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Input from "./Input";
 import Note from "./Note";
+import "./styles/styles.css";
 
 export default function NoteList() {
   const [list, setList] = useState([]);
@@ -38,14 +39,14 @@ export default function NoteList() {
   };
 
   return (
-    <div>
+    <div className="notelist">
       {list.map((item, index) => (
         <li key={item.date}>
           <Note
-            store={list}
             nav={true}
-            setUp={moveUp}
-            setDown={moveDown}
+            store={list}
+            moveUpFunc={moveUp}
+            moveDownFunc={moveDown}
             title={item.title}
             deleteList={deleteList}
             index={index}
