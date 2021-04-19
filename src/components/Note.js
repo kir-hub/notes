@@ -3,10 +3,19 @@ import Input from "./Input";
 import "./styles/styles.css";
 
 export default function Note(props) {
-  const { title, index, deleteList, nav, setUp, setDown, store } = props;
+  const {
+    title,
+    index,
+    deleteList,
+    moveUpFunc,
+    moveDownFunc,
+    store,
+    nav
+  } = props;
 
   const [list, setList] = useState([]);
 
+  // добавляет вложенный список
   const addSublist = (value) => {
     const date = new Date();
     const newList = [
@@ -19,6 +28,7 @@ export default function Note(props) {
     setList(newList);
   };
 
+  // удаляет элемент списка
   const removeList = () => {
     if (deleteList) {
       deleteList(index);
@@ -27,58 +37,71 @@ export default function Note(props) {
     }
   };
 
+  // удаляет вложенный список
   const deleteSublist = (index) => {
     const newList = [...list];
     newList.splice(index, 1);
     setList(newList);
   };
 
-  const removeSublist = () => {
-    setList([]);
-  };
-
+  // навигация
   const moveUp = () => {
-    setUp(index);
+    moveUpFunc(index);
   };
   const moveDown = () => {
-    setDown(index);
+    moveDownFunc(index);
   };
 
   return (
     <div className="main">
-      <h1>{title}</h1>
-      {nav && store[0].title !== title ? <h2 onClick={moveUp}>/\</h2> : ""}
-      {nav && store[store.length - 1].title !== title ? (
-        <h2 onClick={moveDown}>\/</h2>
-      ) : (
-        ""
-      )}
-      {deleteList ? <button onClick={removeList}>delete {title}</button> : ""}
-      {list.length ? (
-        <button className="remove-sublist" onClick={deleteSublist}>
-          remove sublist
+      {deleteList ? (
+        <button className="delete-btn" onClick={removeList}>
+          X
         </button>
       ) : (
         ""
       )}
-      {list.length ? (
-        ""
-      ) : (
-        <Input
-          onAdd={addSublist}
-          btnTitle={list.length ? "add " : "add sublist"}
-        />
-      )}
-      <ul>
-        {list.map((item, index) => (
-          <li key={item.date}>
-            <button className="delete-sublist" onClick={removeSublist}>
-              delete {item.title}
-            </button>
-            <Note title={item.title} />
-          </li>
-        ))}
-      </ul>
+      <h1>{title}</h1>
+      <div className="navbar">
+        {/* store нужен для проверки на каком месте в листе 
+  находтся элементы списка, а nav, чтобы кнопки навигация 
+  отображались только в списке верхнего уровня */}
+        {nav && store[0].title !== title ? (
+          <button onClick={moveUp}>/\</button>
+        ) : (
+          ""
+        )}
+        {nav && store[store.length - 1].title !== title ? (
+          <button onClick={moveDown}>\/</button>
+        ) : (
+          ""
+        )}
+      </div>
+      <div className="sublist-div">
+        {list.length ? (
+          <button className="remove-sublist" onClick={deleteSublist}>
+            X
+          </button>
+        ) : (
+          ""
+        )}
+        {list.length ? (
+          ""
+        ) : (
+          <Input
+            onAdd={addSublist}
+            btnTitle={list.length ? "add " : "add sublist"}
+          />
+        )}
+
+        <ul className="ul-container">
+          {list.map((item, index) => (
+            <li key={item.date}>
+              <Note title={item.title} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

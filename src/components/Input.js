@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from "react";
+import "./styles/styles.css";
 
 export default function Input(props) {
   const { onAdd, btnTitle } = props;
@@ -15,10 +16,9 @@ export default function Input(props) {
   }, []);
 
   return (
-    <div>
+    <div className="input-div">
       <input onChange={onChangeHandler} value={text} palceholder="title" />
       <button onClick={textHandler}> {btnTitle ? btnTitle : "add"} </button>
-      {}
     </div>
   );
 }
